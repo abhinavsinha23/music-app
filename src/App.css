@@ -2,17 +2,45 @@
   text-align: center;
 }
 
+.footerBox {
+  
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 0%;
+  height: 5%;
+  /* p {
+    margin-left: 50px;
+  } */
+}
+
+/* .navWrap {
+  position: fixed;
+} */
 
 .navBar {
+  /* position: fixed; */
   list-style: none;
   display: flex;
-  justify-content: space-between; /* Centers all links except the last one */
+  justify-content: center; /*Centers all links except the last one*/
   align-items: center;
+  margin-top: 0;
   padding: 2vh 1vw;
+  background-color: 'red';
+}
+
+.navBarOption:hover {
+  opacity: 0.4;
+  text-decoration: underline;
+}
+
+.loginButton {
+  display: flex;
+  align-items: center;
 }
 
 .navBar li:last-child {
-  margin-left: auto; /* Pushes the Login link to the right */
+  margin-left: auto; 
 }
 
 nav {
@@ -30,6 +58,7 @@ nav li {
   margin-right: 20px;
 }
 
+
 nav a {
   text-decoration: none;
   color: #fff;}
@@ -41,6 +70,196 @@ nav a {
     font-weight: bold;
     cursor: pointer;
     border-radius: 25px;
-  
 }
 
+button:hover {
+  background-color: #333;
+  color: white;
+}
+
+.searchContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.artistX {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.artistName, .albumName {
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.artistResults {
+  margin-right: 5%;
+}
+
+.albumResults {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.songResults {
+  margin-left: 5%;
+}
+
+.searchResults {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.Modal {
+    display: flex;
+    position: absolute;
+    background-color: rgb(223, 5, 5);
+    border: 8px;
+    border-style: ridge;
+    border-radius: 8px;
+    border-color: blue;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .RegisterBox{
+    flex-direction: column;
+    margin-left: 150px;
+    background-color:rgba(126, 126, 126, 0.349);
+    width:400px;
+    height:400px;
+    margin-top: 60px;
+    border-radius: 20px;
+  }
+  .Home{
+    display: flex;
+  
+  }
+  .LoginBox{
+    box-sizing: border-box;
+   
+    margin-left: 300px;
+    background-color:rgba(126, 126, 126, 0.349);
+    width:400px;
+    height:400px;
+    margin-top: 60px;
+    border-radius: 20px;
+  
+     
+  }
+
+  input[type=text] {
+    width: 200px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    height: 100px;
+  }
+
+  .Textbox{
+    width:300px;
+    height:25px;
+    border-radius: 5px;
+    border: 2px solid black;
+    box-shadow: 3px 3px;
+    background-color: rgb(253, 135, 135);
+  }
+  .RegisterLabel,.LoginLabel{
+    margin-top: 50px;
+    width: 200px;
+    font-weight: 600;
+  
+   
+  }
+    
+  .Textbox:focus {
+    background-color:antiquewhite;
+   
+  }
+
+  .radioWrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: 64.9vh;
+    
+    
+  }
+  .playIcon{
+    cursor: pointer;
+  }
+
+  .eachRadioWrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 1vw;
+    padding-top: 2vh;
+    height: 35vh;
+    background-color: rgba(126, 126, 126, 0.349);
+    border-radius: 5px;
+    width: 350px
+  }
+
+  .radioImg {
+    max-height: 10vh;
+    width: auto;
+  }
+
+  .radioImgDiv{
+    height: 10vh;
+  }
+
+  .radioInput{
+    font-size: x-large;
+    border: none;
+    border-bottom: 2px solid grey;
+    background-color: rgb(253, 135, 135);
+    color: white;
+  }
+
+  
+
+  .radioName {
+    padding: 0 2vw;
+  }
+
+  video {
+    height: 6vh;
+    width: 25vw;
+    position: absolute;
+    top: 10%;
+    right: 5%;
+  }
+
+  .favArtists, .favAlbums {
+    list-style-type: none;
+    padding-right: 2%;
+  }
+
+ .long-box-one{
+ grid-column: span 3;
+  margin-bottom: 5px;
+  margin-top: 5px;
+ }
+  .long-box {
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+    /* padding-bottom: 5%; */
+    
+    height: 300px; /* Adjust the height to make it taller */
+    grid-column: span 3; /* Span all three columns */
+    margin-top: 10px; /* Add margin to separate it from the top row */
+    /* margin-bottom: 6%; */
+  }
+
+  .profileButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

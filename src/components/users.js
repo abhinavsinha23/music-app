@@ -1,3 +1,84 @@
+import React, { useState, useEffect } from "react";
+import { updateUser } from "../utils";
+import { deleteUserByID } from "../utils";
+import { getCookie, deleteCookie } from "../common";
+
+
+const Users = () => {
+    const [key, setKey] = useState()
+    const [newValue, setNewValue] = useState()
+    const [cookie, setCookie] = useState()
+    const [updateRes, setUpdateRes] = useState()
+
+    useEffect(() => {
+        setCookie(getCookie("jwt-token"))
+    }, [])
+
+    
+    const submitHandler = async (event) => {
+        event.preventDefault()
+        setUpdateRes(await updateUser(cookie, key, newValue))
+    }
+
+    const deleteUser = async () => {
+        await deleteUserByID(cookie)
+        deleteCookie("jwt-token")
+        window.location.reload()
+    }
+
+
+
+    if (cookie) {
+
+    return (
+        <div>
+            <div className='update' style={{height: '40vh'}}>
+                <h2>Welcome. Update your information below.</h2>
+                <form onSubmit={submitHandler}>
+                    <label>Information to update:
+                <label>
+                    <input onChange={(event) => setKey(event.target.value)} type="radio" id="username" name="column" value="username" />
+                    &nbsp;Username 
+                </label>
+                <label>
+                <input onChange={(event) => setKey(event.target.value)} type="radio" id="email" name="column" value="email" />
+                &nbsp;Email
+                </label>
+                <label>
+                    <input onChange={(event) => setKey(event.target.value)} type="radio" id="password" name="column" value="password" />
+                    &nbsp;Password
+                </label>
+                    </label>
+                    <br></br>
+                    <label>New {key}:&nbsp;
+                        <input onChange={(event) => setNewValue(event.target.value)}></input>
+                    </label>
+                    <br></br>
+                    <button type='submit'>Update</button>
+                    <p>{updateRes?.message}</p>
+                </form>
+                <br></br>
+                
+            </div>
+            <hr/>
+            <div style={{height: '50vh'}}>
+                <button onClick={(deleteUser)}>Delete account</button>
+            </div>
+        </div>
+    )
+}       else {
+    return (
+            <div>
+                <h2>Please register or log in</h2>
+                
+            </div>
+    )
+}
+}
+
+export default Users
+
+
 // import React, {useState} from 'react';
 // import Navbar from "../App"
 

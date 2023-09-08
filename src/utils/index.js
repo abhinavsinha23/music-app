@@ -1,4 +1,5 @@
 import { writeCookie } from "../common"
+import axios from "axios"
 
 //Register
 export const register = async (username, email, password) => {
@@ -65,47 +66,23 @@ export const deleteUserByID = async (token) => {
     }
 }
 
-export const artistData = async (name) => {
-    try {
-        const response = await fetch(`${process.env.REACT_APP_DB_LINK}artists`, {
-          // mode: "no-cors",
-          method: "POST",
-          headers: {
-              "Content-Type" : "application/json",
-          },
-          body: JSON.stringify({
-            "name" : name
-          })
-      })
-        const data = response.json()
-        console.log(data)
-        return data
-    } catch (error) {
-        console.log(error)
-    }
+export const retrieveUser = async (token) => {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_DB_LINK}users/search`, {
+      method: "GET",
+      headers: {
+          "Content-Type" : "application/json",
+          "Authorization" : token
+      }
+    })
+    const data = await response.json()
+    return data
+  }
+  catch (error) {
+    console.log(error)
+  }
 }
 
-export const albumData = async (name) => {
-    try {
-        const response = await fetch(`${process.env.REACT_APP_DB_LINK}albums`, {
-          // mode: "no-cors",
-          method: "POST",
-          headers: {
-              "Content-Type" : "application/json"
-          },
-          body: JSON.stringify({
-            "name" : name
-          })
-      })
-        const data = response.json()
-        console.log(data)
-        return data
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-//add Fav artist
   export const addFavArtist = async (token, newArtist) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_DB_LINK}users/addFavArtist`, {
@@ -144,6 +121,82 @@ export const albumData = async (name) => {
     }
   };
 
+  export const addFavTrack = async (token, newTrack) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_DB_LINK}users/addFavTrack`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization" : token
+        },
+        body: JSON.stringify({
+            "newTrack" : newTrack
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  export const removeFavArtist = async (token, removedArtist) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_DB_LINK}users/removeFavArtist`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization" : token
+        },
+        body: JSON.stringify({
+            "removedArtist" : removedArtist
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  export const removeFavAlbum = async (token, removedAlbum) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_DB_LINK}users/removeFavAlbum`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization" : token
+        },
+        body: JSON.stringify({
+            "removedAlbum" : removedAlbum
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  export const removeFavTrack = async (token, removedTrack) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_DB_LINK}users/removeFavTrack`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization" : token
+        },
+        body: JSON.stringify({
+            "removedTrack" : removedTrack
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   //get user
   export const getAllUsers = async (token) => {
     try {
@@ -162,7 +215,24 @@ export const albumData = async (name) => {
     }
 }
 
-
+export const spotifyGetToken = async (name) => {
+  try {
+      const response = await fetch(`https://accounts.spotify.com/authorize`, {
+        method: "POST",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+          "name" : name
+        })
+    })
+      const data = response.json()
+      console.log(data)
+      return data
+  } catch (error) {
+      console.log(error)
+  }
+}
 
 //Update User
 
@@ -180,10 +250,58 @@ export const updateUser = async (token, key, newValue) => {
         }),
       });
       const data = await response.json();
-      console.log(data);
+      if (data.errorMessage){
+        return({message: data.errorMessage})
+      }
+      return(data);
     } catch (error) {
       console.log(error);
     }
   };
+
+
+  export const getRadioData = async (searchVal) => {
+        try {
+            const response = await fetch (`https://de1.api.radio-browser.info/json/stations/byname/${searchVal}?limit=25`, {
+                method: "GET",
+                headers: {"Content-Type": "application/json"}
+            }) 
+            const data = await response.json();
+            
+            return(data)
+              
+        } catch (error) {
+            console.log(error)
+        }
+
+  }
   
+//   export const getMusicEvents = async (searchVal) => {
+//     try {
+//         const response = await fetch (``, {
+//             method: "GET",
+//             headers: {"Content-Type": "application/json"}
+//         }) 
+//         const data = await response.json();
+        
+//         return(data)
+          
+//     } catch (error) {
+//         console.log(error)
+//     }
+
+// }
+
+export const getMusicEvents = async (searchVal) => {
+  const {data} = await axios.get(`https://app.ticketmaster.com/discovery/v2/events?apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0&keyword=${searchVal}&locale=*`, {
+      headers: {
+          
+      },
+      params: {
+
+      }
+  })
+  console.log(data)
+  return data
+}
   
