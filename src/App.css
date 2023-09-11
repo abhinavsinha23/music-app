@@ -27,9 +27,14 @@
   margin-top: 0;
   padding: 2vh 1vw;
   background-color: 'red';
+  height: 100%;
 }
 
-.navBarOption:hover {
+.navBarOption{
+  height: 100%;
+}
+.navBarOptionText:hover {
+  background-color: red;
   opacity: 0.4;
   text-decoration: underline;
 }
@@ -85,12 +90,25 @@ button:hover {
 .artistX {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
 }
+
 
 .artistName, .albumName {
   list-style-type: none;
   cursor: pointer;
+}
+
+.artistName:hover {
+  background-color: blue;
+  transform: scale(1.1);
+}
+
+.albumName:hover {
+  background-color: blue;
+  transform: scale(1.1);
 }
 
 .artistResults {
@@ -127,7 +145,7 @@ button:hover {
 
   .RegisterBox{
     flex-direction: column;
-    margin-left: 150px;
+   margin-left: 10px;
     background-color:rgba(126, 126, 126, 0.349);
     width:400px;
     height:400px;
@@ -136,12 +154,13 @@ button:hover {
   }
   .Home{
     display: flex;
+    justify-content: center;
   
   }
   .LoginBox{
     box-sizing: border-box;
    
-    margin-left: 300px;
+  
     background-color:rgba(126, 126, 126, 0.349);
     width:400px;
     height:400px;
@@ -185,7 +204,7 @@ button:hover {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    min-height: 64.9vh;
+    /* min-height: 100vh; */
     
     
   }
@@ -200,7 +219,7 @@ button:hover {
     margin: 1vw;
     padding-top: 2vh;
     height: 35vh;
-    background-color: rgba(126, 126, 126, 0.349);
+    background-color: #EA5455;
     border-radius: 5px;
     width: 350px
   }
@@ -227,6 +246,10 @@ button:hover {
   .radioName {
     padding: 0 2vw;
   }
+  
+  .radioName:hover {
+    text-decoration: underline;
+  }
 
   video {
     height: 6vh;
@@ -239,6 +262,7 @@ button:hover {
   .favArtists, .favAlbums {
     list-style-type: none;
     padding-right: 2%;
+    text-align: left;
   }
 
  .long-box-one{
@@ -246,8 +270,11 @@ button:hover {
   margin-bottom: 5px;
   margin-top: 5px;
  }
+
+
+
   .long-box {
-    background-color: #000;
+    background-color: #000000;
     color: #fff;
     padding: 20px;
     /* padding-bottom: 5%; */
@@ -258,8 +285,89 @@ button:hover {
     /* margin-bottom: 6%; */
   }
 
+ 
   .profileButton {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: white;
+    height: 4vh;
+    min-width: 10vw;
+    border-radius: 20px;
   }
+  @media only screen and (max-width: 600px) and (min-width: 200px)  {
+  .LoginBox{
+    margin-left: 3px;
+  }
+  .Home{
+    display: flex;
+    flex-direction:column;
+  }
+  .RegisterBox{
+    margin-left: 3px;
+  }
+ .hide{
+   visibility: hidden;
+  }
+  .grid-container{
+    margin-left: 10px;
+  }
+  }
+
+  @media only screen and (max-width: 1000px) and (min-width: 600px)  {
+    .LoginBox{
+      margin-left: 10px;
+    }
+    .Home{
+      display: flex;
+      flex-direction:row;
+    }
+    .RegisterBox{
+      margin-left: 10px;
+    }
+    .hide{
+      visibility: hidden;
+     }
+    }
+ label{
+  font-size: large;
+ }
+
+.eventWrap {
+  overflow: auto;
+}
+
+
+.eventWrap:hover {
+  background-color: white;
+}
+
+.favoriteList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 13%;
+
+}
+
+.eachEventWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1vh 5.5vw;
+  border-bottom: 1px dotted white;
+}
+
+.eventLink{
+  text-decoration: none;
+  color: white;
+  padding: 0 1vw;
+  font-size: larger;
+  font-weight: 600;
+}
+
+.detailsList {
+  min-width: 35%;
+}
+
+

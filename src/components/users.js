@@ -37,6 +37,7 @@ const Users = () => {
                 <form onSubmit={submitHandler}>
                     <label>Information to update:
                 <label>
+             
                     <input onChange={(event) => setKey(event.target.value)} type="radio" id="username" name="column" value="username" />
                     &nbsp;Username 
                 </label>
@@ -47,13 +48,16 @@ const Users = () => {
                 <label>
                     <input onChange={(event) => setKey(event.target.value)} type="radio" id="password" name="column" value="password" />
                     &nbsp;Password
+                
                 </label>
                     </label>
                     <br></br>
+                    <br></br>
                     <label>New {key}:&nbsp;
-                        <input onChange={(event) => setNewValue(event.target.value)}></input>
+                        <input onChange={(event) => setNewValue(event.target.value)} className="radioInput"></input>
                     </label>
                     <br></br>
+
                     <button type='submit'>Update</button>
                     <p>{updateRes?.message}</p>
                 </form>

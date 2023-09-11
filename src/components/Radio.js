@@ -45,8 +45,8 @@ const Radio = () => {
 
 
     return ( 
-        
-        <div style={{height: '100%'}}>
+        // style={{textDecoration:"none", color:"black"}}
+        <div style={{minHeight: '100vh'}}>
             <form onSubmit={getRadios}>
                 <label> <input className="radioInput" value={searchVal} onChange={(event) => setSearchVal(event.target.value)} placeholder="Search radio stations" required/></label>
                 <button type="submit">Search</button>

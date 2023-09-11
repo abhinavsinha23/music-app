@@ -1,13 +1,23 @@
 import React from 'react';
-
+import {Link} from 'react-router-dom'
 function Footer() {
+  const changeStyle = (e) => {
+    e.target.style.opacity = '0.6'
+    e.target.style.textDecoration = 'underline'
+  }
+
+  const removeStyle = (e) => {
+    e.target.style.opacity = '1'
+    e.target.style.textDecoration = 'none'
+  }
   return (
     <footer className='footerBox' style={{backgroundColor: 'red',marginBottom:'0', height: '8%', }}>
-      <p> &copy; About</p>
-      <p> Privacy policy</p>
-      <p>  Terms of use</p>
-      <p> &copy; About</p>
-      <p> Contact us </p>
+      <ul style={{listStyleType : 'none', display: 'flex', flexDirection: 'row'}}>
+        <li><Link to="/infoPage" style={{marginRight: '30px', color: 'white'}} onMouseEnter={changeStyle} onMouseLeave={removeStyle}>&copy; About</Link></li>
+        <li><Link to="/infoPage" style={{marginRight: '30px', color: 'white'}} onMouseEnter={changeStyle} onMouseLeave={removeStyle}>Privacy policy</Link></li>
+        <li><Link to="/infoPage" style={{marginRight: '30px', color: 'white'}} onMouseEnter={changeStyle} onMouseLeave={removeStyle}>Terms of use</Link></li>
+        <li><Link to="/infoPage" style={{marginRight: '30px', color: 'white'}} onMouseEnter={changeStyle} onMouseLeave={removeStyle}>Contact us</Link></li>
+      </ul>
     </footer>
   );
 }

@@ -4,8 +4,7 @@ import '../App.css'
 import { useNavigate } from "react-router-dom"
 import { getCookie } from "../common"
 import Modal from 'react-modal'
-import axios from "axios"
-import { addFavAlbum, addFavArtist, addFavTrack } from "../utils"
+import { addFavAlbum, addFavArtist, addFavTrack, searchArtists, searchAlbums, searchSongs } from "../utils"
 
 const customStyles = {
     content: {
@@ -79,14 +78,18 @@ const Music = ({selectedArtist, setSelectedArtist, selectedAlbum, setSelectedAlb
     
     const getAlbumArtistSong = async (event) => {
         event.preventDefault()
-        let artistsSearchResults = await searchArtists()
-        // console.log(artistsSearchResults)
-        setArtists(artistsSearchResults.artists.items)
-        let albumsSearchResults = await searchAlbums()
-        // console.log(albumsSearchResults)
-        setAlbums(albumsSearchResults.albums.items)
-        let songsSearchResults = await searchSongs()
-        setSongs(songsSearchResults.tracks.items)
+        try{
+            let artistsSearchResults = await searchArtists(searchVal, token)
+            setArtists(artistsSearchResults.artists.items)
+
+            let albumsSearchResults = await searchAlbums(searchVal, token)
+            setAlbums(albumsSearchResults.albums.items)
+
+            let songsSearchResults = await searchSongs(searchVal, token)
+            setSongs(songsSearchResults.tracks.items)
+        } catch (error){
+            setArtists("error")
+        }
     }
 
     const REACT_APP_CLIENT_ID = "42fd9711eebd4fb5b3490fa50be6c067"
@@ -96,69 +99,23 @@ const Music = ({selectedArtist, setSelectedArtist, selectedAlbum, setSelectedAlb
 
     useEffect(() => {
         const hash = window.location.hash
-        // console.log("HASH =", hash)
-
         let tempToken = window.localStorage.getItem("token")
-
         if (!tempToken && hash) {
             tempToken = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
-            
-
             window.location.hash = ""
             window.localStorage.setItem("token", tempToken)
-            
+            setTimeout(() => {
+                setToken("")
+                window.localStorage.removeItem("token")
+            }, 3600000) //Deletes token after an hour
         }
         setToken(tempToken)
-        // console.log("TOKEN AFTER SPLIT= ", tempToken)
+        
     }, [])
 
     const logout = () => {
         setToken("")
         window.localStorage.removeItem("token")
-    }
-
-    const searchArtists = async () => {
-        // console.log("SEARCH ARTISTS IS RUNNING, TOKEN =", token)
-        const {data} = await axios.get("https://api.spotify.com/v1/search", {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            params: {
-                q: searchVal,
-                type: "artist"
-            }
-        })
-        return data
-    }
-
-    const searchAlbums = async () => {
-        // console.log("SEARCH ARTISTS IS RUNNING, TOKEN =", token)
-        const {data} = await axios.get("https://api.spotify.com/v1/search", {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            params: {
-                q: searchVal,
-                type: "album"
-            }
-        })
-        // console.log(data)
-        return data
-    }
-
-    const searchSongs = async () => {
-        // console.log("SEARCH ARTISTS IS RUNNING, TOKEN =", token)
-        const {data} = await axios.get("https://api.spotify.com/v1/search", {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            params: {
-                q: searchVal,
-                type: "track"
-            }
-        })
-        console.log(data)
-        return data
     }
 
     const addArtist = async (name) => {
@@ -184,26 +141,23 @@ const Music = ({selectedArtist, setSelectedArtist, selectedAlbum, setSelectedAlb
             <div className="searchContainer">
             {token ? 
                 <form onSubmit={getAlbumArtistSong} className="search">
-                <label>Search for album/artist:&nbsp;
-                    <input onChange={(event) => setSearchVal(event.target.value)} required></input>
-                </label>
+                <label>Search For Album/Artist:&nbsp;  </label>
+             
+                    <input onChange={(event) => setSearchVal(event.target.value)} placeholder="Please Enter Artist/Album " required className="radioInput"></input>
+           
                 <button  type='submit'>Search</button>
-            </form> : <p>Login to Spotify to search</p>
-
-            }
+            </form> : <p>Login to Spotify to search</p>}
 
             {!token ?
             <button style={{margin:"0px"}}><a style={{textDecoration:"none", color:"black"}} href={`${REACT_APP_AUTH_ENDPOINT}?client_id=${REACT_APP_CLIENT_ID}&redirect_uri=${REACT_APP_REDIRECT_URI}&response_type=${REACT_APP_RESPONSE_TYPE}`}>Login To Spotify</a></button>
-                
-                : <button style={{margin:"3px"}} onClick={logout}>Logout Of Spotify</button>
-            }
+                : <button style={{margin:"3px"}} onClick={logout}>Logout Of Spotify</button>}
             </div>
-            <p style={{margin:"0px", fontSize:"12px"}}>(Login token will expire after 1 hour)</p>
+            <p style={{margin:"0px", fontSize:"12px"}}>(<b>Login token will expire after 1 hour</b>)</p>
             <div className="searchResults">
                 <div className="artistResults">
                     <h2>Artists</h2>
                     <ul>
-                        {artists.map((artist, index) => {
+                        {artists === "error" ? "Spotify login expired, please log in again" : artists.map((artist, index) => {
                         return (
                                 <div className="artistName" onClick={() => openArtistModal(artist)} key={index}>
                                     <li>{artist.name}</li>
@@ -213,9 +167,7 @@ const Music = ({selectedArtist, setSelectedArtist, selectedAlbum, setSelectedAlb
                     </ul>
                     <Modal className="Modal "isOpen={artistModalOpen} onRequestClose={closeArtistModal} style={customStyles} contentLabel="Example Modal" ariaHideApp={false}>
                     <button className="modalBtn" onClick={closeArtistModal}>Back to browse</button>
-                    {/* {console.log(artistModalOpen)}
-                    {console.log(selectedArtist)} */}
-                    <img src={!selectedArtist.images ? "" : selectedArtist.images[0].url} className="modalImg" alt="artistModalImg" style={{width:'250px'}}/>
+                    <img src={!selectedArtist.images ? "" : selectedArtist.images[0].url} className="modalImg" alt="artistModalImg" style={{width:'100%'}}/>
                     <p>{selectedArtist.name}</p>
                     <a href={!selectedArtist.external_urls ? "" : selectedArtist.external_urls.spotify} rel="noreferrer" target="_blank" style={{color:"white"}}>Open Spotify Page</a>
                     <button className="addArtistBtn" onClick={() => addArtist(selectedArtist.name)}>Add {selectedArtist.name} to Favourites</button>
@@ -235,9 +187,7 @@ const Music = ({selectedArtist, setSelectedArtist, selectedAlbum, setSelectedAlb
                     </ul>
                     <Modal className="Modal "isOpen={albumModalOpen} onRequestClose={closeAlbumModal} style={customStyles} contentLabel="Example Modal" ariaHideApp={false}>
                     <button className="modalBtn" onClick={closeAlbumModal}>Back to browse</button>
-                    {/* {console.log(albumModalOpen)}
-                    {console.log(selectedAlbum)} */}
-                    <img src={!selectedAlbum.images ? "" : selectedAlbum.images[0].url} className="modalImg" alt="albumModalImg" style={{width:'250px'}}/>
+                    <img src={!selectedAlbum.images ? "" : selectedAlbum.images[0].url} className="modalImg" alt="albumModalImg" style={{width:'100%'}}/>
                     <p>{selectedAlbum.name}</p>
                     <a href={!selectedAlbum.external_urls ? "" : selectedAlbum.external_urls.spotify} rel="noreferrer" target="_blank" style={{color:"white"}}>Open Spotify Page</a>
                     <button className="addAlbumBtn" onClick={() => addAlbum(selectedAlbum.name)}>Add {selectedAlbum.name} to Favourites</button>
@@ -257,11 +207,9 @@ const Music = ({selectedArtist, setSelectedArtist, selectedAlbum, setSelectedAlb
                     </ul>
                     <Modal className="Modal "isOpen={songModalOpen} onRequestClose={closeSongModal} style={customStyles} contentLabel="Example Modal" ariaHideApp={false}>
                     <button className="modalBtn" onClick={closeSongModal}>Back to browse</button>
-                    {/* {console.log(albumModalOpen)}
-                    {console.log(selectedAlbum)} */}
-                    {/* <img src={!selectedSong.images ? "" : selectedSong.images[0].url} className="modalImg" alt="songModalImg" style={{width:'250px'}}/> */}
+                    <img src={selectedSong.album?.images[0].url} className="modalImg" alt="songModalImg" style={{width:'100%'}}/>
                     <p>{selectedSong?.name}</p>
-                    {/* <p>Artist: {selectedSong.artists[0].name}</p> THIS LINE OF CODE IS BROKEN */}
+                    {<p>Artist: {selectedSong?.artists && selectedSong.artists[0].name}</p>}
                     <a href={!selectedSong.external_urls ? "" : selectedSong.external_urls.spotify} rel="noreferrer" target="_blank" style={{color:"white"}}>Open Spotify Page</a>
                     <button className="addAlbumBtn" onClick={() => addSong(selectedSong.name)}>Add {selectedSong.name} to Favourites</button>
                     <p>{responseMessage}</p>
@@ -272,7 +220,5 @@ const Music = ({selectedArtist, setSelectedArtist, selectedAlbum, setSelectedAlb
 
     )
 }
-
-
 
 export default Music

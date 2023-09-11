@@ -3,8 +3,6 @@ import '../App.css'
 import { useState, useEffect } from "react"
 import { removeFavAlbum, removeFavTrack, retrieveUser } from "../utils"
 import { getCookie } from "../common"
-//import music.js???
-import  { Footer } from "./footer"
 import { removeFavArtist, getMusicEvents} from "../utils"
 
 
@@ -13,32 +11,12 @@ import { removeFavArtist, getMusicEvents} from "../utils"
 
 const Home = () => {
   const [user, setUser] = useState({})
-  const [favArtists, setFavArtists] = useState(['There are no artists currently added, please select one from the music tab'])            
-  const [albumInfo, setAlbumInfo] = useState(['There are no albums currently added, please select one from the music tab']);
-  const [favSongs, setFavSongs] = useState(['There are no songs currently added, please select one from the music tab']);
+  const [favArtists, setFavArtists] = useState([])            
+  const [albumInfo, setAlbumInfo] = useState([]);
+  const [favSongs, setFavSongs] = useState([]);
   const [musicEvents, setMusicEvents] = useState([])
   
-  const getEvents = async (artistName) => {
-    const getMusicEventsRes = await getMusicEvents(artistName)
-    let tempArray = [...musicEvents]
-    getMusicEventsRes._embedded.events.map((mEvent, index) => {
-      tempArray.push(mEvent)
-    })
-    setMusicEvents(tempArray)
-    
 
-  }
-  
-  console.log("music events = ", musicEvents)
-  
-  useEffect(() => {
-    favArtists?.map((artist, index) => {
-      // getEvents(artist)
-      console.log("ARTIST = ", artist)
-    })
-  },[favArtists])
-
-  
 
   const getUser = async (cookie) => {
     let userInfo = await retrieveUser(cookie);
@@ -55,26 +33,51 @@ const Home = () => {
     let cookie = getCookie("jwt-token")
     if (cookie !== false){
       getUser(cookie)
-      
     }
   }, [])
 
-  
-const containerStyle = {
-  display: 'grid', 
-  justifyContent: 'center', 
-  gridTemplateColumns: '1fr 1fr 1fr',
-  width: '60%',
-  height: '60%',
-  alignItems: 'center',  
-  marginLeft: '20%',
-  marginBottom: '5%'
-     
-};
+  useEffect(() => {
+    //Reset music events state to empty every time favArtists is updated (for when the user deletes a favourite artist)
+    setMusicEvents([])
+    const getData = async (artist) => {
+      try {
+        const mEvent = await getMusicEvents(artist.replace(/ /g, "")); //Removes all spaces
+        //Check if artists returned data contains a music event to display, if so then add it to events array, if not then don't add it
+        if (mEvent._embedded) {
+          setMusicEvents((prevMusicEvents) => [...prevMusicEvents, mEvent]);
+        }
+      } catch (error) {
+        console.error(`Error fetching events for ${artist}:`, error);
+      }
+    };
+    const fetchEventsForFavoriteArtists = async () => {
+      for (let i = 0; i < favArtists.length; i++) {
+        await getData(favArtists[i]);
+        //Limits loop to 5, too many calls to API too quickly results in an error
+        if (i >= 4) {
+          return
+        }
+      }
+    };
+    if (favArtists.length > 0) {
+      fetchEventsForFavoriteArtists();
+    }
+  }, [favArtists]);
 
+  const containerStyle = {
+    display: 'grid', 
+    justifyContent: 'center', 
+    gridTemplateColumns: '1fr 1fr 1fr',
+    width: '80%',
+    height: '60%',
+    alignItems: 'center',  
+    marginLeft: '10%',
+    marginBottom: '5%'
+      
+  };
+  
   const boxstyle = {
-    
-    backgroundColor:'#000',
+    backgroundColor: '#32393d',
     color: '#fff',
     padding: '20px', 
     marginTop: '10px',
@@ -83,14 +86,15 @@ const containerStyle = {
     marginBottom: '3%',
     textAlign: 'center',
       height: '300px',
-    
     // borderRadius: '20px',
   };
+
+
 
   function FavoriteSongs(userObj) {
     if(!userObj.user){
       return
-    }else {
+    } else {
       if (!userObj.user.favoriteTracks.length) {
         return
       }
@@ -102,15 +106,13 @@ const containerStyle = {
         songArray.push(userObj.user.favoriteTracks)
         setFavSongs(songArray)
       }
+    }
   }
-     }
 
-
-
-     const FavoriteAlbums = (userObj) => {
+  const FavoriteAlbums = (userObj) => {
       if(!userObj.user){
         return
-      }else {
+      } else {
         if (!userObj.user.favoriteAlbums.length) {
           return
         }
@@ -122,15 +124,13 @@ const containerStyle = {
           albumArray.push(userObj.user.favoriteAlbums)
           setAlbumInfo(albumArray)
         }
+      }
     }
-    }
-
-
 
     const FavoriteArtists = (userObj) => {
       if(!userObj.user) {
         return
-      }else {
+      } else {
         if (!userObj?.user?.favoriteArtists?.length) {
           return
         }
@@ -170,114 +170,112 @@ const containerStyle = {
     return (
         <div style={{height: '60%'}}>
           <h1>Welcome to our Music app!</h1>
-          <p></p>
-
-      <div style={containerStyle} className="grid-container">
-        <div style={boxstyle} className="grid-item">
-            <h2>Add your favorite artists and albums to your library.</h2>
-            <p> where other sites may suggest random bands, we allow you to add your favourites to your personal space</p>
-        </div>
-        <div style={boxstyle} className="grid-item">
-            <h2>Explore a vast collection of music and albums from various genres.</h2> 
-            <p>🎺🎧🎤🪗♪🥁♭🎹♩♬🎸</p>
-        </div>
-        <div style={boxstyle} className="grid-item">
-            <h2>Stay updated with the latest music releases and upcoming events.</h2>
-            <p></p>
-        </div>
-        <div style={boxstyle} className="long-box-one grid-item">
-            <h2>Find out when your favorite artists are going on tour in your area.</h2>
-            <p>Using our extensive database, we have made sure that as soon as one of your' favourites goes on tour, you'll be the first to know.</p>
-        </div>
-        <div  style={boxstyle} className="long-box-one grid-item">
-            <h2>Connect with other music enthusiasts and share your musical discoveries.</h2>
-            <p> By connecting your' social media and discord you can use this website to connect to your favourite bands instantly from here.</p>
-        </div>
-    </div>
-
-
-
-        
-<div style ={containerStyle}>
-      <div style ={boxstyle} className="box">
-        <h2>Your favourite artists</h2>
-        <ul>
-          {
-          favArtists[0] === 'There are no artists currently added, please select one from the music tab' 
-          ?
-          <p>{favArtists[0]}</p>
-          :
-          favArtists.map((artist, index) => {
-          return (
-            <div key={index} className="artistX">
-              <li className="favArtists">{artist}</li>
-              <button style={{padding: '0.2vw', margin: '0', fontSize: '10pt'}} onClick={() => removeArtist(artist)}>X</button>
+          <div style={containerStyle} className="grid-container">
+            <div style={boxstyle} className="grid-item">
+              <h2>Create your own unique library</h2>
+              <p className= "hide" style={{textAlign:'center'}}> Add your favourite artists, albums and songs to your personal space</p>
             </div>
-          )
-          })
-          }
-          
-        </ul>
-      </div>
-      
-
-      <div style={boxstyle} className="box">
-        <h2>Favourite albums</h2>
-        <ul>
-          {
-            albumInfo[0] === 'There are no albums currently added, please select one from the music tab'
-            ?
-            <p>{albumInfo[0]}</p>
-            :
-            albumInfo.map((album, index) => {
-                return (
-                  <div key={index} className="artistX">
-                    <li className="favAlbums">{album}</li>
-                    <button style={{padding: '0.2vw', margin: '0', fontSize: '10pt'}} onClick={() => removeAlbum(album)}>X</button>
-                  </div>
-                )
-            })
-          }
-    
-  </ul>
-      </div>
-
-      <div style={boxstyle} className="box">
-        <h2>Favourite songs</h2>
-        <ul>
-          {
-          favSongs[0] === 'There are no songs currently added, please select one from the music tab' 
-          ?
-          <p>{favSongs[0]}</p>
-          :
-          favSongs.map((song, index) => {
-          return (
-            <div key={index} className="artistX">
-              <li className="favArtists">{song}</li>
-              <button style={{padding: '0.2vw', margin: '0', fontSize: '10pt'}} onClick={() => removeSong(song)}>X</button>
+            <div style={boxstyle} className="grid-item">
+              <h2>Explore a vast collection of music and albums from various genres.</h2> 
+              <p >🎺🎧🎤🪗♪🥁♭🎹♩♬🎸</p>
             </div>
-          )
-          })
-          }
-          
-        </ul>
-      </div>
+            <div style={boxstyle} className="grid-item">
+              <h2>Stay updated with the latest music releases and upcoming events.</h2>
+              <p>We have partnered with spotify to bring you the latest events from your favourite artists.</p>
+            </div>
+            {/* <div style={boxstyle} className="long-box-one grid-item">
+              <h2>Find out when your favorite artists are going on tour in your area.</h2>
+              <p>Using our extensive database, we have made sure that as soon as one of your' favourites goes on tour, you'll be the first to know.</p>
+            </div> */}
+            <div  style={boxstyle} className="long-box-one grid-item">
+              <h2>Connect with other music enthusiasts and share your musical discoveries.</h2>
+              <p> By connecting your' social media and discord you can use this website to connect to your favourite bands instantly from here.</p>
+              <div style= {{display: 'flex', justifyContent:'space-evenly',paddingTop: '30px'}}> 
+                <a target="_blank" rel="noreferrer" href="https://www.facebook.com/" style={{ backgroundColor: 'blue', display: 'block', padding: '10px', color: 'white', textDecoration: 'none', width: '20%' }}>Facebook</a>
+                <a target="_blank" rel="noreferrer" href="https://twitter.com/?lang=en" style={{ backgroundColor: '#ADD8E6', display: 'block', padding: '10px', color: 'white', textDecoration: 'none',width: '20%' }}>Twitter</a>
+                <a target="_blank" rel="noreferrer" href="https://open.spotify.com" style={{ backgroundColor: '#46923c', display: 'block', padding: '10px', color: 'white', textDecoration: 'none', width: '20%' }}>Spotify</a>
+                <a target="_blank" rel="noreferrer" href="https://www.instagram.com/reel/Cq0jIVyM1Ho/?igshid=MTc4MmM1YmI2Ng%3D%3D&fbclid=IwAR2-7oHcNxUxTrUUzjkSxxKiZKSmGgqDiHEnAGG8ze3zUxHF4BZ7ja8Lit8" style={{ backgroundColor: 'orange', display: 'block', padding: '10px', color: 'white', textDecoration: 'none', width: '20%' }}>etc</a>          
+              </div>
+            </div>
+          </div>  
+          <div style ={containerStyle}>
+            <div style ={boxstyle} className="box eventWrap">
+              <h2>Favourite artists</h2>
+              <ul className="favoriteList">
+                {
+                  favArtists.length === 0
+                  ?
+                  <p>There are no artists currently added, please select one from the music tab</p>
+                  :
+                  favArtists.map((artist, index) => {
+                  return (
+                    <div key={index} className="artistX">
+                      <li className="favArtists">{artist}</li>
+                      <button style={{padding: '0.2vw', margin: '0', fontSize: '8pt'}} onClick={() => removeArtist(artist)}>X</button>
+                    </div>
+                  )
+                  })
+                }
+              </ul>
+          </div>
+          <div style={boxstyle} className="box eventWrap">
+            <h2>Favourite albums</h2>
+            <ul className="favoriteList">
+              {
+                albumInfo.length === 0
+                ?
+                <p>There are no albums currently added, please select one from the music tab</p>
+                :
+                albumInfo.map((album, index) => {
+                  return (
+                    <div key={index} className="artistX">
+                      <li className="favAlbums">{album}</li>
+                      <button style={{padding: '0.2vw', margin: '0', fontSize: '8pt'}} onClick={() => removeAlbum(album)}>X</button>
+                    </div>
+                  )
+                })
+              }
+            </ul>
+          </div>
+          <div style={boxstyle} className="box eventWrap">
+            <h2>Favourite songs</h2>
+            <ul className="favoriteList">
+              {
+                favSongs.length === 0
+                ?
+                <p>There are no tracks currently added, please select one from the music tab</p>
+                :
+                favSongs.map((song, index) => {
+                  return (
+                    <div key={index} className="artistX">
+                      <li className="favArtists">{song}</li>
+                      <button style={{padding: '0.2vw', margin: '0', fontSize: '8pt'}} onClick={() => removeSong(song)}>X</button>
+                    </div>
+                  )
+                })
+              }
+            </ul>
+          </div>
 
-      <div style={boxstyle} className="long-box">
-        <h2>Upcoming tour dates</h2>
-        {albumInfo.map((album, index) => {
-                return (
-                  <div key={index} className="artistX">
-                    <li className="favAlbums">{album}</li>
-                    <button style={{padding: '0.2vw', margin: '0', fontSize: '10pt'}} onClick={() => removeAlbum(album)}>X</button>
-                  </div>
-                )
-        })}
+          <div style={boxstyle} className="long-box eventWrap">
+            <h2>Upcoming events</h2>
+            {musicEvents.map((event, index) => {
+                    return (
+                      <div key={index} className="eachEventWrap">
+                         <img style={{width:'100px'}} src={event?._embedded?.events[0].images && event?._embedded?.events[0].images[0].url} alt="tour_img"/>
+                        <a className="eventLink" target="_blank" rel="noreferrer" href={event?._embedded?.events && event?._embedded?.events[0].url} >{event?._embedded?.events && event?._embedded?.events[0].name}</a>
+                        <ul className="detailsList">
+                          <li style={{listStyleType: 'none'}}><b>Start Date:</b> {event?._embedded?.events[0].dates && event?._embedded?.events[0].dates.start.localDate}</li>
+                          <li style={{listStyleType: 'none'}}><b>Venue:</b> {event?._embedded?.events[0]._embedded && event?._embedded?.events[0]._embedded.venues[0].name}</li>
+                          <li style={{listStyleType: 'none'}}><b>Location:</b> {event?._embedded?.events[0]._embedded && event?._embedded?.events[0]._embedded.venues[0].city.name}</li>
+                        </ul>
+                        
+                      </div>
+                    )
+            })}
+          </div>
+        </div> 
       </div>
-    </div> 
-    </div>
-
-    
     )
 }
 

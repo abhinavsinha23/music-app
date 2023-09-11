@@ -12,12 +12,13 @@ function Navbar() {
 
 
   
-const getUser = async () => {
-    const tempUser = await retrieveUser(cookie)
-    setUser(tempUser)
-}
+
 
   useEffect(() => {
+    const getUser = async () => {
+      const tempUser = await retrieveUser(cookie)
+      setUser(tempUser)
+    }
     getUser()
   }, [cookie])
 
@@ -40,37 +41,42 @@ const getUser = async () => {
   return (
     <nav className="navWrap">
       <ul className="navBar">
-        <li className="navBarOption">
-          <Link to="/">Home</Link>
-        </li>
+        
+          <li>
+          <div className="navBarOption">
+            <Link className="navBarOptionText" to="/">Home</Link>
+            </div>
+          </li>
+        
 
-        <li className="navBarOption">
-          <Link to="/music">Music</Link>
-        </li>
+        <div className="navBarOption">
+          <li>
+            <Link className="navBarOptionText" to="/music">Music</Link>
+          </li>
+        </div>  
 
-        <li className="navBarOption">
-          <Link to="/radio">Radio</Link>
-        </li>
+        <div className="navBarOption">
+          <li>
+            <Link className="navBarOptionText" to="/radio">Radio</Link>
+          </li>
+        </div>
 
         {!cookie ? (
           <li className="loginButton navBarOption" >
-            <Link to="/login">Login</Link>
+            <Link className="navBarOptionText" to="/login">Login</Link>
           </li>
         ) : (
           // <div className="logoutBox">
             <li className="loginButton">
               <Link to="/users">
-                  <div className="profileButton" style={{width:'150px', backgroundColor:"white", borderRadius:"20px"}}>
+                  <div className="profileButton">
                       <p style={{color:"black"}}>{user?.user?.username}</p>
                       <img style={{marginLeft:"10px"}} width="15" src={settingsIcon} alt="albumModalImg" />
                   </div>
               </Link>
               <Link to="/" onClick={logout} style={{paddingLeft:'50px'}} onMouseEnter={changeStyle} onMouseLeave={removeStyle}>Logout</Link>
             </li>
-        
-        )}
-
-        
+        )}        
       </ul>
     </nav>
   );

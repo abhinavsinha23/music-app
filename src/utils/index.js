@@ -276,32 +276,54 @@ export const updateUser = async (token, key, newValue) => {
 
   }
   
-//   export const getMusicEvents = async (searchVal) => {
-//     try {
-//         const response = await fetch (``, {
-//             method: "GET",
-//             headers: {"Content-Type": "application/json"}
-//         }) 
-//         const data = await response.json();
-        
-//         return(data)
-          
-//     } catch (error) {
-//         console.log(error)
-//     }
 
-// }
 
 export const getMusicEvents = async (searchVal) => {
-  const {data} = await axios.get(`https://app.ticketmaster.com/discovery/v2/events?apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0&keyword=${searchVal}&locale=*`, {
+  try {
+    const {data} = await axios.get(`https://app.ticketmaster.com/discovery/v2/events?apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0&keyword=${searchVal}&locale=*&size=1`
+    )
+    return data
+} catch (error) {
+          console.log(error)
+       }
+}
+
+export const searchArtists = async (searchVal, token) => {
+  const {data} = await axios.get("https://api.spotify.com/v1/search", {
       headers: {
-          
+          Authorization: `Bearer ${token}`
       },
       params: {
-
+          q: searchVal,
+          type: "artist"
       }
   })
-  console.log(data)
+  return data
+}
+
+export const searchAlbums = async (searchVal, token) => {
+  const {data} = await axios.get("https://api.spotify.com/v1/search", {
+      headers: {
+          Authorization: `Bearer ${token}`
+      },
+      params: {
+          q: searchVal,
+          type: "album"
+      }
+  })
+  return data
+}
+
+export const searchSongs = async (searchVal, token) => {
+  const {data} = await axios.get("https://api.spotify.com/v1/search", {
+      headers: {
+          Authorization: `Bearer ${token}`
+      },
+      params: {
+          q: searchVal,
+          type: "track"
+      }
+  })
   return data
 }
   

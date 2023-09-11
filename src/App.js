@@ -8,6 +8,7 @@ import Users from "./components/users"
 import Navbar from "./components/Navbar"
 import Radio from "./components/Radio"
 import Footer from "./components/footer"
+import InfoPage from './components/infoPage';
 
 function App() {
   const [selectedArtist, setSelectedArtist] = useState({})
@@ -30,6 +31,7 @@ function App() {
           <Route path="/music" element= {<Music selectedArtist={selectedArtist} setSelectedArtist={setSelectedArtist} selectedAlbum={selectedAlbum} setSelectedAlbum={setSelectedAlbum} selectedSong={selectedSong} setSelectedSong={setSelectedSong}/>}></Route>
           <Route path="/radio" element= {<Radio className="radioElement"/>}/>
           <Route path="/users" element= {<Users />}/>
+          <Route path="/infoPage" element= {<InfoPage />}/>
         </Routes>
         <Footer />
       </BrowserRouter>
