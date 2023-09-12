@@ -24,9 +24,7 @@ const Login = (props) => {
     const loginHandler = async (event) => {
         event.preventDefault()
         setLoginResponse("Logging In...")
-        console.log("ATTEMPTING LOGIN")
         let loginRes = await login(username, email, password)
-        console.log("LOGIN CALL FINISHED")
         console.log(loginRes)
         if (loginRes?.message === "Success"){
             // console.log("before = ", props.userLoggedIn)

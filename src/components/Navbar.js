@@ -1,17 +1,14 @@
 import { Link} from "react-router-dom";
 import { getCookie, deleteCookie } from "../common";
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import {retrieveUser} from "../utils/index"
 import "../App.css";
-// import { hover } from "@testing-library/user-event/dist/hover";
 import settingsIcon from "../Image/icons8-settings.svg"
 
 function Navbar() {
   const [cookie, setCookie] = useState(getCookie("jwt-token"));
   const [user, setUser] = useState();
 
-
-  
 
 
   useEffect(() => {
@@ -58,6 +55,12 @@ function Navbar() {
         <div className="navBarOption">
           <li>
             <Link className="navBarOptionText" to="/radio">Radio</Link>
+          </li>
+        </div>
+
+        <div className="navBarOption">
+          <li>
+            <Link className="navBarOptionText" to="/allusers">Users</Link>
           </li>
         </div>
 

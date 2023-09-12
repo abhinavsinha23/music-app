@@ -208,7 +208,7 @@ export const retrieveUser = async (token) => {
             }
         })
         const user = await response.json()
-        return user.user
+        return user
     } 
     catch (error) {
         console.log(error)

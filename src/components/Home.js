@@ -65,6 +65,8 @@ const Home = () => {
   }, [favArtists]);
 
   const containerStyle = {
+
+
     display: 'grid', 
     justifyContent: 'center', 
     gridTemplateColumns: '1fr 1fr 1fr',
@@ -77,8 +79,12 @@ const Home = () => {
   };
   
   const boxstyle = {
-    backgroundColor: '#32393d',
-    color: '#fff',
+    // backgroundColor:'rgba(174, 68, 90, 0.8)',
+    // backgroundColor:'rgba(50, 57, 61, 0.8)',
+    borderRadius: '60px',
+    backgroundColor:'rgba(0, 0, 0, 0.6)',
+    // backgroundColor: '#32393d',
+    // color: '#fff',
     padding: '20px', 
     marginTop: '10px',
     marginLeft: '3px',
@@ -192,9 +198,9 @@ const Home = () => {
               <p> By connecting your' social media and discord you can use this website to connect to your favourite bands instantly from here.</p>
               <div style= {{display: 'flex', justifyContent:'space-evenly',paddingTop: '30px'}}> 
                 <a target="_blank" rel="noreferrer" href="https://www.facebook.com/" style={{ backgroundColor: 'blue', display: 'block', padding: '10px', color: 'white', textDecoration: 'none', width: '20%' }}>Facebook</a>
-                <a target="_blank" rel="noreferrer" href="https://twitter.com/?lang=en" style={{ backgroundColor: '#ADD8E6', display: 'block', padding: '10px', color: 'white', textDecoration: 'none',width: '20%' }}>Twitter</a>
+                <a target="_blank" rel="noreferrer" href="https://twitter.com/?lang=en" style={{ backgroundColor: '#3d91eb', display: 'block', padding: '10px', color: 'white', textDecoration: 'none',width: '20%' }}>Twitter</a>
                 <a target="_blank" rel="noreferrer" href="https://open.spotify.com" style={{ backgroundColor: '#46923c', display: 'block', padding: '10px', color: 'white', textDecoration: 'none', width: '20%' }}>Spotify</a>
-                <a target="_blank" rel="noreferrer" href="https://www.instagram.com/reel/Cq0jIVyM1Ho/?igshid=MTc4MmM1YmI2Ng%3D%3D&fbclid=IwAR2-7oHcNxUxTrUUzjkSxxKiZKSmGgqDiHEnAGG8ze3zUxHF4BZ7ja8Lit8" style={{ backgroundColor: 'orange', display: 'block', padding: '10px', color: 'white', textDecoration: 'none', width: '20%' }}>etc</a>          
+                <a target="_blank" rel="noreferrer" href="https://www.youtube.com/" style={{ backgroundColor: 'red', display: 'block', padding: '10px', color: 'white', textDecoration: 'none', width: '20%' }}>Youtube</a>          
               </div>
             </div>
           </div>  

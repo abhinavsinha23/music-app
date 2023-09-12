@@ -34,7 +34,6 @@
   height: 100%;
 }
 .navBarOptionText:hover {
-  background-color: red;
   opacity: 0.4;
   text-decoration: underline;
 }
@@ -68,8 +67,8 @@ nav a {
   text-decoration: none;
   color: #fff;}
 
-  button {
-    margin: 2vw;
+button {
+    margin: 1vw;
     padding: 1vw;
     font-size: x-large;
     font-weight: bold;
@@ -96,48 +95,38 @@ button:hover {
 }
 
 
-.artistName, .albumName {
+.resultNames {
   list-style-type: none;
   cursor: pointer;
+  width: 90%;
 }
 
-.artistName:hover {
+.resultNames:hover {
   background-color: blue;
   transform: scale(1.1);
 }
 
-.albumName:hover {
-  background-color: blue;
-  transform: scale(1.1);
-}
-
-.artistResults {
-  margin-right: 5%;
-}
-
-.albumResults {
-  margin-left: 5%;
-  margin-right: 5%;
-}
-
-.songResults {
-  margin-left: 5%;
+.results {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 30vw;
+  border-radius: 10px;
 }
 
 .searchResults {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .Modal {
     display: flex;
     position: absolute;
-    background-color: rgb(223, 5, 5);
-    border: 8px;
-    border-style: ridge;
+    background-color: rgb(176, 45, 45);
+    border: 8px ridge blue;
     border-radius: 8px;
-    border-color: blue;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -188,7 +177,7 @@ button:hover {
   }
   .RegisterLabel,.LoginLabel{
     margin-top: 50px;
-    width: 200px;
+    width: 180px;
     font-weight: 600;
   
    
@@ -204,9 +193,6 @@ button:hover {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    /* min-height: 100vh; */
-    
-    
   }
   .playIcon{
     cursor: pointer;
@@ -239,6 +225,8 @@ button:hover {
     border-bottom: 2px solid grey;
     background-color: rgb(253, 135, 135);
     color: white;
+    min-width: 25vw;
+    border-radius: 5px;
   }
 
   
@@ -249,14 +237,6 @@ button:hover {
   
   .radioName:hover {
     text-decoration: underline;
-  }
-
-  video {
-    height: 6vh;
-    width: 25vw;
-    position: absolute;
-    top: 10%;
-    right: 5%;
   }
 
   .favArtists, .favAlbums {
@@ -277,12 +257,9 @@ button:hover {
     background-color: #000000;
     color: #fff;
     padding: 20px;
-    /* padding-bottom: 5%; */
-    
     height: 300px; /* Adjust the height to make it taller */
     grid-column: span 3; /* Span all three columns */
     margin-top: 10px; /* Add margin to separate it from the top row */
-    /* margin-bottom: 6%; */
   }
 
  
@@ -298,6 +275,7 @@ button:hover {
   @media only screen and (max-width: 600px) and (min-width: 200px)  {
   .LoginBox{
     margin-left: 3px;
+    width:330px;
   }
   .Home{
     display: flex;
@@ -305,14 +283,27 @@ button:hover {
   }
   .RegisterBox{
     margin-left: 3px;
+    width:330px;
   }
  .hide{
    visibility: hidden;
   }
+  .footerBox{
+
+    margin-top: 360px !important;
+  }
+  
   .grid-container{
-    margin-left: 10px;
+    margin-left: 110px !important;
+  
+   margin-right: 10px !important;
   }
-  }
+.radioInput{
+  width:180px;
+}
+
+
+ }
 
   @media only screen and (max-width: 1000px) and (min-width: 600px)  {
     .LoginBox{
@@ -329,12 +320,23 @@ button:hover {
       visibility: hidden;
      }
     }
+
+
+
+
+    
  label{
   font-size: large;
  }
 
 .eventWrap {
   overflow: auto;
+  -ms-overflow-style: none;  /* Hide scrollbar IE and Edge */
+  scrollbar-width: none;  /* Hide scrollbar Firefox */
+}
+
+.eventWrap::-webkit-scrollbar {
+  display: none; /* Hide scrollbar Chrome */
 }
 
 
@@ -370,4 +372,46 @@ button:hover {
   min-width: 35%;
 }
 
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
+.userDetailsWrapAll {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.userDetailsWrap {
+  display: flex;
+  flex-direction: column;
+  background-color: #000000a2;
+  width: 25vw;
+  margin: 2vw;
+  padding: 1vw;
+  border-radius: 20px;
+}
+
+.userDetailsWrap > p {
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+.userDetailsWrap > h4 {
+  margin: 0px;
+  margin-top: 10px;
+}
+
+.userDetailsWrap > h1 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.radioPlayer {
+  height: 6.5vh;
+  width: 25vw;
+  top: 10%;
+  position: sticky;
+}
