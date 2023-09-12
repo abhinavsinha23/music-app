@@ -93,7 +93,7 @@ const Music = ({selectedArtist, setSelectedArtist, selectedAlbum, setSelectedAlb
     }
 
     const REACT_APP_CLIENT_ID = "42fd9711eebd4fb5b3490fa50be6c067"
-    const REACT_APP_REDIRECT_URI = "http://localhost:3000/music"
+    const REACT_APP_REDIRECT_URI = "https://music-app-gamma-lilac.vercel.app/music"
     const REACT_APP_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
     const REACT_APP_RESPONSE_TYPE = "token"
 
