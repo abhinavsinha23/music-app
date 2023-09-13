@@ -38,7 +38,11 @@ function Navbar() {
   return (
     <nav className="navWrap">
       <ul className="navBar">
-        
+        <li>
+          <div className="navBarOption">
+            <Link className="logo" to="/">MusiKa</Link>
+            </div>
+          </li>
           <li>
           <div className="navBarOption">
             <Link className="navBarOptionText" to="/">Home</Link>

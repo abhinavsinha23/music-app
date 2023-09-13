@@ -15,10 +15,10 @@ function InfoPage() {
     switch (currentSection) {
       case 'about':
         return (
-          <div>
+          <div id = "about">
             <h2>About us</h2>
             <strong>Our Story:</strong> <p>
-              At [Your Company Name], our journey began with a shared passion for music and technology. We envisioned a world where music could seamlessly integrate with the digital landscape, making it accessible to all. That vision led us to create our Music API, a platform that empowers developers, musicians, and music enthusiasts to harness the power of music in innovative ways.
+              At Musika, our journey began with a shared passion for music and technology. We envisioned a world where music could seamlessly integrate with the digital landscape, making it accessible to all. That vision led us to create our Music API, a platform that empowers developers, musicians, and music enthusiasts to harness the power of music in innovative ways.
             </p><strong>Our Team:</strong>
             <p>
                Our team is a diverse group of music enthusiasts, developers, and creatives who are united by the belief that music has the potential to transcend boundaries and connect people from all walks of life. With expertise in both music and technology, we work tirelessly to curate, develop, and deliver the best solutions through our API. We are driven by our collective love for music and our commitment to making it an integral part of the digital world.
@@ -30,7 +30,7 @@ function InfoPage() {
         );
       case 'privacy-policy':
         return (
-          <div>
+          <div id = "privacy">
           <h2>Privacy policy</h2> <strong>Our Commitments:</strong> 
           <p>
             At FAKEMUSIC INC, we are committed to safeguarding your privacy and protecting your personal information. This Privacy Policy outlines how we collect, use, disclose, and protect your data when you use our Music API. By accessing or using the Service, you consent to the practices described in this Privacy Policy.
@@ -49,7 +49,7 @@ function InfoPage() {
         );
       case 'terms-of-use':
         return (
-          <div>
+          <div id = "terms">
           <h2>Terms of use</h2>
           <p>
           By accessing or using our Music API (the "Service"), you agree to comply with and be bound by these Terms of Use. If you do not agree to these terms, please refrain from using the Service. Your use of the Service is contingent upon your acceptance of and adherence to these terms, which govern your relationship with [Your Company Name] in connection with the Service.
@@ -64,7 +64,7 @@ function InfoPage() {
         );
       case 'contact-us':
         return (
-          <div style={{height: '100%'}}>
+          <div id = "contact" style={{height: '100%'}}>
             <h2>Contact</h2>
             <p>
             We value your feedback, questions, and concerns. If you need assistance, have inquiries about our Music API, or wish to provide us with your valuable insights, please don't hesitate to get in touch with us. We are here to help and are committed to providing you with the best possible support. [Your Company Name] was founded with a vision to revolutionize the [industry/niche] industry. Since our inception in [year], we have been on a relentless journey to provide innovative solutions that make a difference in the lives of our customers.

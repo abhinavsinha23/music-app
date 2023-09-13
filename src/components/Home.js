@@ -15,7 +15,7 @@ const Home = () => {
   const [albumInfo, setAlbumInfo] = useState([]);
   const [favSongs, setFavSongs] = useState([]);
   const [musicEvents, setMusicEvents] = useState([])
-  
+  const [musicEventsMessage, setMusicEventsMessage] = useState("test")
 
 
   const getUser = async (cookie) => {
@@ -37,8 +37,8 @@ const Home = () => {
   }, [])
 
   useEffect(() => {
-    //Reset music events state to empty every time favArtists is updated (for when the user deletes a favourite artist)
-    setMusicEvents([])
+    
+    setMusicEvents([]) //Reset music events state to empty every time favArtists is updated (for when the user deletes a favourite artist)
     const getData = async (artist) => {
       try {
         const mEvent = await getMusicEvents(artist.replace(/ /g, "")); //Removes all spaces
@@ -50,6 +50,7 @@ const Home = () => {
         console.error(`Error fetching events for ${artist}:`, error);
       }
     };
+
     const fetchEventsForFavoriteArtists = async () => {
       for (let i = 0; i < favArtists.length; i++) {
         await getData(favArtists[i]);
@@ -57,12 +58,24 @@ const Home = () => {
         if (i >= 4) {
           return
         }
+
       }
     };
     if (favArtists.length > 0) {
       fetchEventsForFavoriteArtists();
     }
   }, [favArtists]);
+
+  useEffect(() => {
+    if (musicEvents.length === 0) {
+      setMusicEventsMessage("No Events Found")
+    } else {
+      setMusicEventsMessage("")
+    }
+  },[musicEvents])
+
+
+
 
   const containerStyle = {
 
@@ -74,27 +87,53 @@ const Home = () => {
     height: '60%',
     alignItems: 'center',  
     marginLeft: '10%',
-    marginBottom: '5%'
+    // marginBottom: '5%'
       
   };
   
   const boxstyle = {
-    // backgroundColor:'rgba(174, 68, 90, 0.8)',
-    // backgroundColor:'rgba(50, 57, 61, 0.8)',
+    display: 'flex',
+    flexDirection: 'column',
     borderRadius: '60px',
     backgroundColor:'rgba(0, 0, 0, 0.6)',
-    // backgroundColor: '#32393d',
-    // color: '#fff',
     padding: '20px', 
     marginTop: '10px',
     marginLeft: '3px',
     marginRight: '3px',
     marginBottom: '3%',
     textAlign: 'center',
-      height: '300px',
-    // borderRadius: '20px',
+    minHeight: '500px',
   };
 
+  const boxstyleSmall = {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    borderRadius: '60px',
+    backgroundColor:'rgba(0, 0, 0, 0.6)',
+    padding: '20px', 
+    marginTop: '10px',
+    marginLeft: '3px',
+    marginRight: '3px',
+    marginBottom: '3%',
+    textAlign: 'center',
+    minHeight: '27vh',
+  };
+
+  const boxstyleMedium = {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    borderRadius: '60px',
+    backgroundColor:'rgba(0, 0, 0, 0.6)',
+    padding: '20px', 
+    marginTop: '10px',
+    marginLeft: '3px',
+    marginRight: '3px',
+    marginBottom: '3%',
+    textAlign: 'center',
+    minHeight: '200px',
+  };
 
 
   function FavoriteSongs(userObj) {
@@ -102,6 +141,7 @@ const Home = () => {
       return
     } else {
       if (!userObj.user.favoriteTracks.length) {
+        setFavSongs([])
         return
       }
       else if (userObj.user.favoriteTracks.includes(", ")) {
@@ -120,6 +160,7 @@ const Home = () => {
         return
       } else {
         if (!userObj.user.favoriteAlbums.length) {
+          setAlbumInfo([])
           return
         }
         else if (userObj.user.favoriteAlbums.includes(", ")) {
@@ -138,6 +179,7 @@ const Home = () => {
         return
       } else {
         if (!userObj?.user?.favoriteArtists?.length) {
+          setFavArtists([])
           return
         }
         else if (userObj.user.favoriteArtists.includes(", ")) {
@@ -175,25 +217,23 @@ const Home = () => {
 
     return (
         <div style={{height: '60%'}}>
-          <h1>Welcome to our Music app!</h1>
+          <div className="welcomeMessage">
+            <h1>Welcome to&nbsp;</h1><h1 className="welcomeLogo">MusiKa!</h1>
+          </div>
           <div style={containerStyle} className="grid-container">
-            <div style={boxstyle} className="grid-item">
+            <div style={boxstyleSmall} className="grid-item">
               <h2>Create your own unique library</h2>
               <p className= "hide" style={{textAlign:'center'}}> Add your favourite artists, albums and songs to your personal space</p>
             </div>
-            <div style={boxstyle} className="grid-item">
+            <div style={boxstyleSmall} className="grid-item">
               <h2>Explore a vast collection of music and albums from various genres.</h2> 
               <p >🎺🎧🎤🪗♪🥁♭🎹♩♬🎸</p>
             </div>
-            <div style={boxstyle} className="grid-item">
+            <div style={boxstyleSmall} className="grid-item">
               <h2>Stay updated with the latest music releases and upcoming events.</h2>
               <p>We have partnered with spotify to bring you the latest events from your favourite artists.</p>
             </div>
-            {/* <div style={boxstyle} className="long-box-one grid-item">
-              <h2>Find out when your favorite artists are going on tour in your area.</h2>
-              <p>Using our extensive database, we have made sure that as soon as one of your' favourites goes on tour, you'll be the first to know.</p>
-            </div> */}
-            <div  style={boxstyle} className="long-box-one grid-item">
+            <div  style={boxstyleMedium} className="long-box-one grid-item">
               <h2>Connect with other music enthusiasts and share your musical discoveries.</h2>
               <p> By connecting your' social media and discord you can use this website to connect to your favourite bands instantly from here.</p>
               <div style= {{display: 'flex', justifyContent:'space-evenly',paddingTop: '30px'}}> 
@@ -265,10 +305,11 @@ const Home = () => {
 
           <div style={boxstyle} className="long-box eventWrap">
             <h2>Upcoming events</h2>
+            <p>{musicEventsMessage}</p>
             {musicEvents.map((event, index) => {
                     return (
                       <div key={index} className="eachEventWrap">
-                         <img style={{width:'100px'}} src={event?._embedded?.events[0].images && event?._embedded?.events[0].images[0].url} alt="tour_img"/>
+                         <img style={{width:'25%'}} src={event?._embedded?.events[0].images && event?._embedded?.events[0].images[0].url} alt="tour_img"/>
                         <a className="eventLink" target="_blank" rel="noreferrer" href={event?._embedded?.events && event?._embedded?.events[0].url} >{event?._embedded?.events && event?._embedded?.events[0].name}</a>
                         <ul className="detailsList">
                           <li style={{listStyleType: 'none'}}><b>Start Date:</b> {event?._embedded?.events[0].dates && event?._embedded?.events[0].dates.start.localDate}</li>
@@ -277,6 +318,7 @@ const Home = () => {
                         </ul>
                         
                       </div>
+                      
                     )
             })}
           </div>

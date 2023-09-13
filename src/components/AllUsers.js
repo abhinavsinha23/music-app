@@ -17,7 +17,7 @@ const AllUsers = () => {
         if (cookie === false) {
             navigate('/login')
         }
-    })
+    }, [navigate])
 
     const [users, setUsers] = useState([])
 
@@ -33,10 +33,10 @@ const AllUsers = () => {
 
 
     return (
-        <div>
+        <div style={{minHeight: '100vh'}}>
             <h1>Users</h1>
             <div className='userDetailsWrapAll'>
-                {users.map((user, index) => {
+                {users?.map((user, index) => {
                     
                         return (
                         <div className='userDetailsWrap' key={index}>

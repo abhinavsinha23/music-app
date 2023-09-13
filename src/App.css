@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap');
+
 .App {
   text-align: center;
 }
@@ -41,6 +43,17 @@
 .loginButton {
   display: flex;
   align-items: center;
+}
+.logo {
+  font-family: 'Kaushan Script', cursive;
+  font-size: x-large;
+}
+.welcomeMessage {
+  display: flex;
+  justify-content: center;
+}
+.welcomeLogo {
+  font-family: 'Kaushan Script', cursive;
 }
 
 .navBar li:last-child {
@@ -295,7 +308,7 @@ button:hover {
   
   .grid-container{
     margin-left: 110px !important;
-  
+    
    margin-right: 10px !important;
   }
 .radioInput{

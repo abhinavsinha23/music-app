@@ -19,7 +19,7 @@ const Login = (props) => {
         if (cookie !== false) {
             navigate('/')
         }
-    })
+    }, [navigate])
     
     const loginHandler = async (event) => {
         event.preventDefault()

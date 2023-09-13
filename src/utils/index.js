@@ -95,8 +95,7 @@ export const retrieveUser = async (token) => {
             "newArtist" : newArtist
         }),
       });
-      const data = await response.json();
-      console.log(data);
+      await response.json();
     } catch (error) {
       console.log(error);
     }
@@ -114,8 +113,7 @@ export const retrieveUser = async (token) => {
             "newAlbum" : newAlbum
         }),
       });
-      const data = await response.json();
-      console.log(data);
+      await response.json();
     } catch (error) {
       console.log(error);
     }
@@ -133,8 +131,7 @@ export const retrieveUser = async (token) => {
             "newTrack" : newTrack
         }),
       });
-      const data = await response.json();
-      console.log(data);
+      await response.json();
     } catch (error) {
       console.log(error);
     }
@@ -152,8 +149,7 @@ export const retrieveUser = async (token) => {
             "removedArtist" : removedArtist
         }),
       });
-      const data = await response.json();
-      console.log(data);
+      await response.json();
     } catch (error) {
       console.log(error);
     }
@@ -171,8 +167,7 @@ export const retrieveUser = async (token) => {
             "removedAlbum" : removedAlbum
         }),
       });
-      const data = await response.json();
-      console.log(data);
+      await response.json();
     } catch (error) {
       console.log(error);
     }
@@ -190,8 +185,7 @@ export const retrieveUser = async (token) => {
             "removedTrack" : removedTrack
         }),
       });
-      const data = await response.json();
-      console.log(data);
+      await response.json();
     } catch (error) {
       console.log(error);
     }
@@ -227,7 +221,6 @@ export const spotifyGetToken = async (name) => {
         })
     })
       const data = response.json()
-      console.log(data)
       return data
   } catch (error) {
       console.log(error)

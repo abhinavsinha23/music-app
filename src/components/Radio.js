@@ -15,14 +15,26 @@ const Radio = (props) => {
         if (cookie === false) {
             navigate('/login')
         }
-    })
+    }, [navigate])
 
     const [searchVal, setSearchVal] = useState("")
     const [radioData, setRadioData] = useState([])
+    const [searchingMessage, setSearchingMessage] = useState("")
     
     const getRadios = async (event) => {
         event.preventDefault()
-        setRadioData( await getRadioData(searchVal))
+        setRadioData([])
+
+        setSearchingMessage("Searching...")
+
+        const tempData = await getRadioData(searchVal)
+        setRadioData(tempData)
+        if (tempData.length === 0) {
+            setSearchingMessage("No Results Found")
+        } else {
+            setSearchingMessage("")
+        }
+        
     }
 
     const playRadio = (link, n) => {
@@ -39,6 +51,7 @@ const Radio = (props) => {
                 <button type="submit">Search</button>
                 
             </form>
+            <p>{searchingMessage}</p>
             <div className="radioWrap">
             {radioData.map((station, index) => {
                 return(

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { updateUser } from "../utils";
 import { deleteUserByID } from "../utils";
 import { getCookie, deleteCookie } from "../common";
+import { useNavigate } from "react-router-dom"
 
 
 const Users = () => {
@@ -9,10 +10,15 @@ const Users = () => {
     const [newValue, setNewValue] = useState()
     const [cookie, setCookie] = useState()
     const [updateRes, setUpdateRes] = useState()
+    const navigate = useNavigate()
 
     useEffect(() => {
         setCookie(getCookie("jwt-token"))
-    }, [])
+        let cookie = getCookie("jwt-token")
+        if (cookie === false) {
+            navigate('/')
+        }
+    }, [navigate])
 
     
     const submitHandler = async (event) => {
@@ -21,9 +27,15 @@ const Users = () => {
     }
 
     const deleteUser = async () => {
-        await deleteUserByID(cookie)
-        deleteCookie("jwt-token")
-        window.location.reload()
+        const choice = window.confirm(
+            'Are you sure you want to delete your account? All data will be lost.'
+          );
+          if (choice) {
+            await deleteUserByID(cookie)
+            deleteCookie("jwt-token")
+            window.location.reload()
+          }
+        
     }
 
 

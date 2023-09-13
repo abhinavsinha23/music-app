@@ -25,10 +25,12 @@ const Music = ({selectedArtist, setSelectedArtist, selectedAlbum, setSelectedAlb
     const [albums, setAlbums] = useState([])
     const [songs, setSongs] = useState([])
     const [responseMessage, setResponseMessage] = useState("")
+    const [searchingMessage, setSearchingMessage] = useState("")
     const [artistModalOpen, setArtistModal] = useState(false);
     const [albumModalOpen, setAlbumModal] = useState(false)
     const [songModalOpen, setSongModal] = useState(false)
     const [token, setToken] = useState("")
+
 
     useEffect(() => {
         setArtistModal(false)
@@ -41,7 +43,7 @@ const Music = ({selectedArtist, setSelectedArtist, selectedAlbum, setSelectedAlb
         if (cookie === false) {
             navigate('/login')
         }
-    })
+    }, [navigate])
 
     const openArtistModal = (props) => {
         setSelectedArtist(props)
@@ -79,6 +81,7 @@ const Music = ({selectedArtist, setSelectedArtist, selectedAlbum, setSelectedAlb
     const getAlbumArtistSong = async (event) => {
         event.preventDefault()
         try{
+            setSearchingMessage("Searching...")
             let artistsSearchResults = await searchArtists(searchVal, token)
             setArtists(artistsSearchResults.artists.items)
 
@@ -87,13 +90,16 @@ const Music = ({selectedArtist, setSelectedArtist, selectedAlbum, setSelectedAlb
 
             let songsSearchResults = await searchSongs(searchVal, token)
             setSongs(songsSearchResults.tracks.items)
+            setSearchingMessage("")
         } catch (error){
+            setSearchingMessage("")
             setArtists("error")
         }
     }
 
     const REACT_APP_CLIENT_ID = "42fd9711eebd4fb5b3490fa50be6c067"
-    const REACT_APP_REDIRECT_URI = "https://music-app-gamma-lilac.vercel.app/music"
+    // const REACT_APP_REDIRECT_URI = "http://localhost:3000/music"   //LOCAL HOST
+    const REACT_APP_REDIRECT_URI = "https://music-app-gamma-lilac.vercel.app/music" //LIVE HOST
     const REACT_APP_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
     const REACT_APP_RESPONSE_TYPE = "token"
 
@@ -133,20 +139,22 @@ const Music = ({selectedArtist, setSelectedArtist, selectedAlbum, setSelectedAlb
     }
 
     return (
-        <div style={{height: '100vh'}}>
+        <div style={{minHeight: '100vh'}}>
             <div className="searchContainer">
             {token ? 
                 <form onSubmit={getAlbumArtistSong} className="search">
              
                     <input placeholder="Search Albums/Artists/Songs" onChange={(event) => setSearchVal(event.target.value)}  required className="radioInput" />
-           
+                    
                     <button  type='submit'>Search</button>
                
                 </form> : <p>Login to Spotify to search</p>}
+                
                 {!token ?
                 <button style={{margin:"0px"}}><a style={{textDecoration:"none", color:"black"}} href={`${REACT_APP_AUTH_ENDPOINT}?client_id=${REACT_APP_CLIENT_ID}&redirect_uri=${REACT_APP_REDIRECT_URI}&response_type=${REACT_APP_RESPONSE_TYPE}`}>Login To Spotify</a></button>
                 : <button style={{margin:"3px"}} onClick={logout}>Logout Of Spotify</button>}
             </div>
+            <p>{searchingMessage}</p>
             <p style={{fontSize:'24px', margin:'0px'}}>{artists === "error" ? "Spotify login expired, please log in again" : ""}</p>
             <p style={{margin:"1vh", fontSize:"12px"}}>(<b>Spotify login will expire after 1 hour</b>)</p>
             <div className="searchResults">
