@@ -389,6 +389,7 @@ button:hover {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-left: 25%;
 }
 
 .userDetailsWrapAll {

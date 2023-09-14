@@ -16,7 +16,7 @@ function InfoPage() {
       case 'about':
         return (
           <div id = "about">
-            <h2>About us</h2>
+            <h2>About</h2>
             <strong>Our Story:</strong> <p>
               At Musika, our journey began with a shared passion for music and technology. We envisioned a world where music could seamlessly integrate with the digital landscape, making it accessible to all. That vision led us to create our Music API, a platform that empowers developers, musicians, and music enthusiasts to harness the power of music in innovative ways.
             </p><strong>Our Team:</strong>
@@ -105,7 +105,7 @@ function InfoPage() {
   }
 
   return (
-    <div className='infoContainer' style={{width:'50%', marginLeft: '520px', fontSize: 'larger', backgroundColor: 'red', marginBottom: '1%', minHeight: '100vh'}}>
+    <div className='infoContainer' style={{width:'50%', fontSize: 'larger', backgroundColor: 'red', marginBottom: '1%', minHeight: '100vh'}}>
       <h1>Info Page</h1>
       <p>This is the Info Page where you can find information about:</p>
       <ul style={{listStyleType: 'none',}}>
